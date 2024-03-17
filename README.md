@@ -1,7 +1,7 @@
-# isynclinux
+# iSynux
 
 > **Note**  
-> This repository is work-in-progress, and only supports downloading for now.
+> This repository is work-in-progress, and supports downloading and uploading [pretty alpha !!!]
 > Updates are expected when I have free time.
 
 
@@ -14,7 +14,7 @@ I couldn't find such program online so I created my own with PyiCloud
 
 ## Features
 - [x] Download currently existing version
-- [ ] Upload files
+- [x] Upload files
 - [ ] Handle files/directories that don't exist on server anymore
 - [ ] Automatic syncing (either event-based or by looping)
 - [ ] Virtual files support
