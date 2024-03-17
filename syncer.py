@@ -1,5 +1,4 @@
-#!/bin/python3
-from os import getenv
+from os import getenv, listdir
 import sys
 import click
 from pyicloud import PyiCloudService
@@ -46,6 +45,21 @@ def authenticate_2fa(api: PyiCloudService) -> int:
     return 0
 
 
+def upload_new_files(api: PyiCloudService, sync_dir: str) -> int:
+    try:
+        files = listdir(sync_dir)
+        for file_name in files:
+            file_path = join(sync_dir, file_name)
+            if isfile(file_path):
+                print(f"Uploading {file_name}...")
+                api.drive.upload(file_path)
+                print(f"{file_name} uploaded successfully")
+        return 0
+    except Exception as e:
+        print(f"Error occurred during upload: {str(e)}")
+        return 1
+
+
 def main() -> int:
     is_password_saved_to_keyring = get_env("PYICLOUD_PASSWORD") != ""
     username, password = get_credinteals(is_password_saved_to_keyring)
@@ -68,6 +82,9 @@ def main() -> int:
 
     service = SyncService(api)
     if service.sync_icloud_drive_to_disk(sync_dir) > 0:
+        return 1
+
+    if upload_new_files(api, sync_dir) > 0:
         return 1
 
     return 0
