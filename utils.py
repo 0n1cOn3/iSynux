@@ -1,6 +1,8 @@
-from os.path import expanduser
+from os.path import expanduser, join
 from os import environ
 from getpass import getpass
+from pyicloud.services.drive import DriveNode
+
 
 USERNAME_CACHE_FILE = expanduser("~/.username")
 
@@ -20,7 +22,7 @@ def get_input_or_fallback_file(prompt: str, fallback_file: str):
     return username
 
 
-def get_credinteals(password_already_saved: bool):
+def get_credentials(password_already_saved: bool):
     username = get_input_or_fallback_file("Email: ", USERNAME_CACHE_FILE)
     if password_already_saved:
         return username, ""
@@ -38,3 +40,9 @@ def get_env(key: str) -> str:
         return environ[key]
     except KeyError:
         return ""
+
+
+def upload_file_to_icloud(file_path: str, icloud_folder: DriveNode) -> None:
+    filename = Path(file_path).name
+    with open(file_path, 'rb') as file:
+        icloud_folder.upload(filename, file)
