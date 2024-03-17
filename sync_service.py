@@ -113,3 +113,8 @@ class SyncService:
         file_out = open(sync_dir + "/" + drive_file.name, 'wb')
         copyfileobj(response.raw, file_out)
         file_out.close()
+
+    def upload_file_to_icloud(self, file_path: str, icloud_folder: DriveNode) -> None:
+        filename = os.path.basename(file_path)
+        with open(file_path, 'rb') as file:
+            icloud_folder.upload(filename, file)
